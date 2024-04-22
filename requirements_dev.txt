@@ -1,0 +1,6 @@
+black
+mypy
+mypy-extensions
+pytest
+pytest-cov
+flake8

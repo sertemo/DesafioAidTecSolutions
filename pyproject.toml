@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "DesafioAidTecSolutions"
+version = "0.1.0"
+description = "Desafío Kopuru de WineQuality"
+authors = [
+    {name = "Sergio Tejedor moreno", email = "tejedor.moreno@gmail.com"}
+]
+dependencies = [
+]
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+addopts = "--cov=testingactions"
+testpaths = [
+    "tests",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.mypy]
+mypy_path = "src"
+check_untyped_defs = true
+disallow_any_generics = true
+ignore_missing_imports = true
+no_implicit_optional = true
+show_error_codes = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+no_implicit_reexport = true
