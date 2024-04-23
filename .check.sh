@@ -2,7 +2,6 @@
 
 # Ejecuta verificaciones
 # Black, mypy, flake8 y pytest
-# Estos paquetes deben estar instalados dentro de poetry en el proyecto correspondiente
 # Asume que los scripts del proyecto están dentro de carpeta 'src'
 
 # Define colores

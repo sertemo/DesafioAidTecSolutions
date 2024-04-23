@@ -4,3 +4,6 @@ mypy-extensions
 pytest
 pytest-cov
 flake8
+sphinx
+recommonmark # soporte para markdown
+sphinx_rtd_theme # tema Read the Docs

@@ -19,3 +19,4 @@ from pathlib import Path
 
 RUTA_TRAIN_DATASET = Path("data/raw/calidad_vino_AT-_train.csv")
 RUTA_TEST_DATASET = Path("data/raw/calidad_vino_AT-_test.csv")
+RUTA_MODELS_SERIALISED = Path("models")
