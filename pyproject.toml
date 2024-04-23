@@ -2,17 +2,6 @@
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[project]
-name = "DesafioAidTecSolutions"
-version = "0.1.0"
-description = "Desafío Kopuru de WineQuality"
-authors = [
-    {name = "Sergio Tejedor moreno", email = "tejedor.moreno@gmail.com"}
-]
-dependencies = [
-]
-requires-python = ">=3.10"
-
 [tool.pytest.ini_options]
 addopts = "--cov=testingactions"
 testpaths = [
@@ -21,7 +10,7 @@ testpaths = [
 
 [tool.black]
 line-length = 88
-target-version = ['py38']
+target-version = ['py310']
 
 [tool.mypy]
 mypy_path = "src"
