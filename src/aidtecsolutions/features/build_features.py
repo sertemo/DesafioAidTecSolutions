@@ -23,6 +23,7 @@ import pandas as pd
 
 import settings
 from aidtecsolutions.features.custom_transformers import WineDatasetTransformer
+from aidtecsolutions.features.utils import generate_dataset_name
 
 
 def main() -> None:
@@ -52,7 +53,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--estandarizar",
-        help="Etandariza todas las variables tipo float",
+        help="Estandariza todas las variables tipo float",
         action="store_true",
     )
     parser.add_argument(
@@ -66,6 +67,11 @@ def main() -> None:
         action="store_true",
     )
     parser.add_argument(
+        "--outliers",
+        help="Elimina outliers del datset usando IsolationForest como método",
+        action="store_true",
+    )
+    parser.add_argument(
         "--drop",
         nargs="+",
         help="Dropea las columnas pasadas",
@@ -76,7 +82,9 @@ def main() -> None:
         help="Crea transformaciones logarítmicas a las varibales pasadas",
     )
     parser.add_argument(
-        "--save", help="Guarda el dataset en formato csv", action="store_true"
+        "--save",
+        help=f"Guarda el dataset en formato csv en {settings.FOLDER_DATA_PROCESSED}",
+        action="store_true",
     )
 
     # Parseamos los argumentos
@@ -85,41 +93,30 @@ def main() -> None:
     wt = WineDatasetTransformer(
         corregir_alcohol=args.alcohol,
         corregir_densidad=args.densidad,
-        shuffle=args.shuffle,
         color_interactions=args.color,
         densidad_alcohol_interaction=args.densidad_alcohol,
-        standardize=args.estandarizar,
         ratio_diox=args.ratiodiox,
         rbf_diox=args.rbfdiox,
-        drop_columns=args.drop,
+        remove_outliers=args.outliers,
+        standardize=args.estandarizar,
         log_transformation=args.log,
+        drop_columns=args.drop,
+        shuffle=args.shuffle,
     )
-
-    X = pd.read_csv(settings.RUTA_TRAIN_DATASET_RAW, index_col=0)
-
-    X_transformed: pd.DataFrame = wt.fit_transform(X)
-    print(X_transformed.columns)
-    print(X_transformed.head())
+    # Cargamos el dataset raw
+    df_train = pd.read_csv(settings.RUTA_TRAIN_DATASET_RAW, index_col=0)
+    # Aplicamos las transformaciones pasadas por consola
+    df_train_transformed: pd.DataFrame = wt.fit_transform(df_train)
+    print(df_train_transformed.columns)
+    print(df_train_transformed.head())
 
     if args.save:
-        dataset_name = f"""{settings.TRAIN_DATASET}_\
-        {'alcohol' if args.alcohol else ''}-\
-        {'corregir_densidad' if args.densidad else ''}-\
-        {'shuffle' if args.shuffle else ''}-\
-        {'color_interactions' if args.color else ''}-\
-        {'densidad_alcohol_interaction' if args.densidad_alcohol else ''}-\
-        {'standardize' if args.estandarizar else ''}-\
-        {'ratio_diox' if args.ratiodiox else ''}-\
-        {'rbf_diox' if args.rbfdiox else ''}-\
-        drop_columns={str(args.drop)}-\
-        log_transformation={args.log}"""
-        dataset_name = "".join(dataset_name.split())
+        nombre_dataset: str = generate_dataset_name(settings, args)
+        ruta_completa = settings.FOLDER_DATA_PROCESSED / nombre_dataset
+        df_train_transformed.to_csv(ruta_completa)
 
-        ruta_dataset = settings.FOLDER_DATA_PROCESSED / (dataset_name + ".csv")
-        X_transformed.to_csv(ruta_dataset)
-
-        print("Guardado dataset:")
-        print(ruta_dataset)
+        print("Guardado dataset correctamente en:")
+        print(ruta_completa)
 
 
 if __name__ == "__main__":

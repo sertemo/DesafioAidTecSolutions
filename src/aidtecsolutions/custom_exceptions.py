@@ -12,8 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
+
+class WrongColumnName(Exception):
+    """Cuando pasas un nombre de columna
+    erróneo
+
+    Parameters
+    ----------
+    Exception : _type_
+        _description_
+    """
+
+    pass
 
 
-def test_example():
-    assert True
+class WrongColumnType(Exception):
+    """Cuando intentas hacer una interacción
+    con una columna y tiene un tipo objeto
+    por ejemplo, que no es correcto
+
+    Parameters
+    ----------
+    Exception : _type_
+        _description_
+    """

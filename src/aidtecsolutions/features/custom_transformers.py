@@ -26,6 +26,8 @@ from sklearn.preprocessing import (
     OneHotEncoder,
 )
 
+from aidtecsolutions.custom_exceptions import WrongColumnName, WrongColumnType
+
 
 class WineDatasetTransformer(TransformerMixin, BaseEstimator):
     """Transformer específico del proyecto AidTec"""
@@ -129,13 +131,13 @@ class WineDatasetTransformer(TransformerMixin, BaseEstimator):
         if self.log_transformation_list is not None:
             for col in self.log_transformation_list:
                 if col not in X:
-                    raise ValueError(f"La columna {col} no es correcta")
+                    raise WrongColumnName(f"La columna {col} no es correcta")
 
         # Validacion drops
         if self.drop_columns_list is not None:
             for col in self.drop_columns_list:
                 if col not in X:
-                    raise ValueError(f"La columna {col} no es correcta")
+                    raise WrongColumnName(f"La columna {col} no es correcta")
 
         return self
 
@@ -158,6 +160,11 @@ class WineDatasetTransformer(TransformerMixin, BaseEstimator):
             X_["color_cloruros"] = X_["color"] * X_["cloruros"]
         if self.densidad_alcohol_interaction:
             # Interaccion densidad alcohol
+            # Hay que verificar que se pueda multiplicar
+            if X_["alcohol"].dtype == "object":
+                raise WrongColumnType(
+                    "Seguramente tengas que corregir la variable alcohol"
+                )
             X_["densidad_alcohol"] = X_["densidad"] * X_["alcohol"]
         if self.ratio_diox:
             X_["SO2_l / SO2_tot"] = (
@@ -174,6 +181,12 @@ class WineDatasetTransformer(TransformerMixin, BaseEstimator):
             X_["diox_simil_1"] = diox_simil_1
             X_["diox_simil_2"] = diox_simil_2
         if self.remove_outliers:
+            # Hay que asegurarse de haber corregido alcohol antes
+            # Sino da error
+            if X_["alcohol"].dtype == "object":
+                raise WrongColumnType(
+                    "Seguramente tengas que corregir la variable alcohol"
+                )
             self.outlier_pred = self.isolation_forest.fit_predict(X_)
             X_ = X_.iloc[self.outlier_pred == 1, :].reset_index(drop=True)
 

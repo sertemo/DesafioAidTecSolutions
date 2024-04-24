@@ -12,9 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas as pd
 import pytest
+
+import settings
 
 
 @pytest.fixture(scope="session")
-def mi_fixture():
-    raise NotImplementedError()
+def train_raw():
+    # Cargamos el dataset
+    df_train_raw = pd.read_csv(settings.RUTA_TRAIN_DATASET_RAW, index_col=0)
+    return df_train_raw
