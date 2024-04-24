@@ -12,11 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Scripts con rutas y constantes"""
+"""Scripts con rutas y constantes del proyecto"""
 
 from pathlib import Path
 
+# Rutas
+FOLDER_DATA_RAW = Path("data/raw")
+FOLDER_DATA_PROCESSED = Path("data/processed")
+FOLDER_DATA_INTERIM = Path("data/interim")
+FOLDER_MODELS_SERIALISED = Path("models")
 
-RUTA_TRAIN_DATASET = Path("data/raw/calidad_vino_AT-_train.csv")
-RUTA_TEST_DATASET = Path("data/raw/calidad_vino_AT-_test.csv")
-RUTA_MODELS_SERIALISED = Path("models")
+TRAIN_DATASET = "calidad_vino_AT-_train.csv"
+TEST_DATASET = "calidad_vino_AT-_test.csv"
+RUTA_TRAIN_DATASET_RAW = FOLDER_DATA_RAW / TRAIN_DATASET
+RUTA_TEST_DATASET_RAW = FOLDER_DATA_RAW / TEST_DATASET

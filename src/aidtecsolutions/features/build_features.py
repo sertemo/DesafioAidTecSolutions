@@ -18,11 +18,10 @@
 """Scripts to turn raw data into features for modeling"""
 
 import argparse
-import os
 
 import pandas as pd
 
-import aidtecsolutions.settings as settings
+import settings
 from aidtecsolutions.features.custom_transformers import WineDatasetTransformer
 
 
@@ -76,6 +75,9 @@ def main() -> None:
         nargs="+",
         help="Crea transformaciones logarítmicas a las varibales pasadas",
     )
+    parser.add_argument(
+        "--save", help="Guarda el dataset en formato csv", action="store_true"
+    )
 
     # Parseamos los argumentos
     args = parser.parse_args()
@@ -92,19 +94,32 @@ def main() -> None:
         drop_columns=args.drop,
         log_transformation=args.log,
     )
-    # Ruta del archivo actual
-    current_file = os.path.abspath(__file__)
-    # Subir tres niveles en la estructura de directorios
-    base_dir = os.path.join(current_file, "../../../../")
-    # Normalizar la ruta
-    base_dir = os.path.normpath(base_dir)
-    # Construir la ruta al archivo de datos
-    data_path = base_dir / settings.RUTA_TRAIN_DATASET
 
-    X = pd.read_csv(data_path, index_col=0)
+    X = pd.read_csv(settings.RUTA_TRAIN_DATASET_RAW, index_col=0)
 
     X_transformed: pd.DataFrame = wt.fit_transform(X)
     print(X_transformed.columns)
+    print(X_transformed.head())
+
+    if args.save:
+        dataset_name = f"""{settings.TRAIN_DATASET}_\
+        {'alcohol' if args.alcohol else ''}-\
+        {'corregir_densidad' if args.densidad else ''}-\
+        {'shuffle' if args.shuffle else ''}-\
+        {'color_interactions' if args.color else ''}-\
+        {'densidad_alcohol_interaction' if args.densidad_alcohol else ''}-\
+        {'standardize' if args.estandarizar else ''}-\
+        {'ratio_diox' if args.ratiodiox else ''}-\
+        {'rbf_diox' if args.rbfdiox else ''}-\
+        drop_columns={str(args.drop)}-\
+        log_transformation={args.log}"""
+        dataset_name = "".join(dataset_name.split())
+
+        ruta_dataset = settings.FOLDER_DATA_PROCESSED / (dataset_name + ".csv")
+        X_transformed.to_csv(ruta_dataset)
+
+        print("Guardado dataset:")
+        print(ruta_dataset)
 
 
 if __name__ == "__main__":
