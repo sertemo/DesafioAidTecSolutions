@@ -23,6 +23,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install tox tox-gh-actions
     - name: Check directory structure
-      run: ls -la
+      run: ls -a
     - name: Test with tox
       run: tox
