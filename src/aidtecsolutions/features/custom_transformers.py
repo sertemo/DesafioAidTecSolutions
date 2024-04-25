@@ -67,13 +67,40 @@ class WineDatasetTransformer(TransformerMixin, BaseEstimator):
         self.shuffle = shuffle
 
     def _filtrar_alcohol_malos(self, feature: pd.Series) -> pd.Series:
-        """Devuelve los valores de alcohol potencialmente erróneos"""
+        """Devuelve los valores filtrados de
+        la variable alcohol
+
+        Parameters
+        ----------
+        feature : pd.Series
+            _description_
+
+        Returns
+        -------
+        pd.Series
+            Devuelve los valores erróneos de la variable alcohol
+        """
         return feature[feature.apply(len) > 5]
 
     def _corregir_valores_alcohol(self, feature: pd.Series) -> pd.Series:
-        """Corrige los valores de alcohol corrigiendo las comas.
-        Acepta la feature y devuelve la misma feature con los
-        datos corregido y cambiada a float.
+        """Corrige los valores de la variable alcohol
+        moviendo la coma hacia la izquierda de los valores
+        filtrados erróneos.
+
+        Parameters
+        ----------
+        feature : pd.Series
+            _description_
+
+        Returns
+        -------
+        pd.Series
+            Devuelve la variable corregida
+
+        Raises
+        ------
+        ValueError
+            _description_
         """
         # Copiamos la feature
         feature_ = feature.copy()
@@ -96,9 +123,20 @@ class WineDatasetTransformer(TransformerMixin, BaseEstimator):
         return feature_.astype("float64")  # Devolvemos el tipo
 
     def _corregir_valores_densidad(self, feature: pd.Series) -> pd.Series:
-        """Corrige los valores de densidad debido al mal emplazamiento
-        de las comas dividiendo entre 10 hasta llegar a valores alrededor
-        de 1."""
+        """Corrige los valores erróneos de la variable
+        densidad dividiendo por 10 hasta que se llegue a la
+        unidad.
+
+        Parameters
+        ----------
+        feature : pd.Series
+            _description_
+
+        Returns
+        -------
+        pd.Series
+            Devuelve la variable corregida
+        """
         # Copiamos la feature
         feature_ = feature.copy()
         # Filtramos los valores erroneos

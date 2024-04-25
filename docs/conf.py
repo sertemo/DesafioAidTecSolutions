@@ -6,7 +6,13 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Aidtec Solutions\x1b[D\x1b[D\x1b[D\x1b[D\x1b[D\x1b[D\x1b[D\x1b[D\x1b[D\x1b[D\x1b[D\x1b[D\x1b[D\x1b[D\x1b[D\x1b[DDesafio Kopuru \x1b[3\x1b[3~\x1b[3~ \x1b AidTec Solutions'
+import os
+import sys
+
+
+sys.path.insert(0, os.path.abspath('..')) # Para que acceda a settings.py también
+
+project = 'Aidtec Solutions Desafio Kopuru'
 copyright = '2024, Sergio Tejedor Moreno'
 author = 'Sergio Tejedor Moreno'
 release = '0.1.0'
@@ -14,7 +20,7 @@ release = '0.1.0'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = ['sphinx.ext.autodoc'] # Para que coja los docstrings
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']

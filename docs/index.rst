@@ -1,14 +1,16 @@
-.. Aidtec Solutions[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[DDesafio Kopuru [3[3~[3~  AidTec Solutions documentation master file, created by
+.. Aidtec Solutions AidTec Solutions documentation master file, created by
    sphinx-quickstart on Tue Apr 23 22:42:35 2024.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Aidtec Solutions[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[DDesafio Kopuru [3[3~[3~  AidTec Solutions's documentation!
+Welcome to Aidtec Solutions's documentation!
 =========================================================================================================================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+   usage/build_features
 
 
 
