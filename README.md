@@ -26,12 +26,48 @@ Proyecto con la intención de practicar la organización y estructura de proyect
 
 Con estos archivos configurados ya se puede hacer el paquete **aidtecsolutions** instalable con 
 ```sh
-pip install -e .
+$ pip install -e .
 ```
 
 Esto crea enlaces al paquete en el entorno virtual
 
 ## Uso
+# 1. Build Features
+En primer lugar para la creación del dataset definitivo de cara al entrenamiento usaremos el comando **./make_features.sh** desde la raiz del proyecto. Este comando admite varias flags que aplicarán una serie de transformaciones al dataset original.
+
+Para ver todas las transformaciones disponibles:
+```sh
+$ ./make_features.sh -h
+```
+
+Esto printeará en la consola la siguiente lista:
+```
+options:
+  -h, --help            show this help message and exit
+  --alcohol             Corrige los valores de la variable alcohol
+  --densidad            Corrige los valores de la variable densidad
+  --shuffle             Baraja el dataset
+  --color               Crea todas las interacciones con la variable color
+  --densidad_alcohol    Crea interacci▒n entre alcohol y densidad
+  --estandarizar        Estandariza todas las variables tipo float
+  --ratiodiox           Crea un ratio con la variable dioxido de azufre
+  --rbfdiox             Crea las similitudes con los modos de dioxido de
+                        azufre
+  --outliers            Elimina outliers del datset usando IsolationForest
+                        como m▒todo
+  --drop DROP [DROP ...]
+                        Dropea las columnas pasadas
+  --log LOG [LOG ...]   Crea transformaciones logar▒tmicas a las varibales
+                        pasadas
+  --save                Guarda el dataset en formato csv en data\processed
+
+```
+
+La flag **--save** guarda el dataset transformado con una estructura de nombre que sigue el siguiente formato:
+```
+<nombre dataset original>-<transformacion_1>-<transfomacion_2>-drop=['columa1', 'columna2'].csv
+```
+
 
 ## Licencia
 Copyright 2024 Sergio Tejedor Moreno

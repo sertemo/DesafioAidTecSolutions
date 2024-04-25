@@ -191,6 +191,7 @@ class WineDatasetTransformer(TransformerMixin, BaseEstimator):
             X_ = X_.iloc[self.outlier_pred == 1, :].reset_index(drop=True)
 
         if self.standardize:
+            # Hay que verificar si hay columnas tipo objeto
             X_ = pd.concat(
                 [
                     pd.DataFrame(
@@ -198,6 +199,7 @@ class WineDatasetTransformer(TransformerMixin, BaseEstimator):
                         columns=self.sc.feature_names_in_,
                         index=X_.index,
                     ),
+                    X_.select_dtypes("object"),
                     X_.select_dtypes("int64"),
                 ],
                 axis=1,

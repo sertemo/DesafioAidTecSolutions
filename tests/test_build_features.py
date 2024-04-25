@@ -23,7 +23,7 @@ from aidtecsolutions.custom_exceptions import (
 )
 
 
-def test_corregir_alcohol_type_float(train_raw):
+def test_corregir_alcohol_type_float(train_raw: pd.DataFrame):
     wt = WineDatasetTransformer(
         corregir_alcohol=True,
         corregir_densidad=False,
@@ -41,7 +41,7 @@ def test_corregir_alcohol_type_float(train_raw):
     assert train_transformed['alcohol'].dtype == 'float64'
 
 
-def test_corregir_densidad_type_float(train_raw):
+def test_corregir_densidad_type_float(train_raw: pd.DataFrame):
     wt = WineDatasetTransformer(
         corregir_alcohol=False,
         corregir_densidad=True,
@@ -59,7 +59,7 @@ def test_corregir_densidad_type_float(train_raw):
     assert train_transformed['densidad'].dtype == 'float64'
 
 
-def test_corregir_densidad_max_value(train_raw):
+def test_corregir_densidad_max_value(train_raw: pd.DataFrame):
     wt = WineDatasetTransformer(
         corregir_alcohol=False,
         corregir_densidad=True,
@@ -78,7 +78,7 @@ def test_corregir_densidad_max_value(train_raw):
     assert train_transformed['densidad'].max() < 2
 
 
-def test_binarizar_color_por_defecto(train_raw):
+def test_binarizar_color_por_defecto(train_raw: pd.DataFrame):
     wt = WineDatasetTransformer(
         corregir_alcohol=False,
         corregir_densidad=False,
@@ -97,7 +97,7 @@ def test_binarizar_color_por_defecto(train_raw):
     assert train_transformed['color'].max() == 1 and (len(train_transformed['color'].value_counts()) == 2)
 
 
-def test_drop_good_columns(train_raw):
+def test_drop_good_columns(train_raw: pd.DataFrame):
     wt = WineDatasetTransformer(
         corregir_alcohol=False,
         corregir_densidad=False,
@@ -116,7 +116,7 @@ def test_drop_good_columns(train_raw):
     assert ('color' not in train_transformed.columns) and ('alcohol' not in train_transformed.columns)
 
 
-def test_densidad_alcohol_interaction(train_raw):
+def test_densidad_alcohol_interaction(train_raw: pd.DataFrame):
     wt = WineDatasetTransformer(
         corregir_alcohol=True,
         corregir_densidad=False,
@@ -136,7 +136,7 @@ def test_densidad_alcohol_interaction(train_raw):
     assert np.isclose(train_transformed['densidad_alcohol'], expected, atol=1e-8).all()
 
 
-def test_remove_outliers_menos_muestras(train_raw):
+def test_remove_outliers_menos_muestras(train_raw: pd.DataFrame):
     wt = WineDatasetTransformer(
         corregir_alcohol=True,
         corregir_densidad=False,
@@ -155,7 +155,7 @@ def test_remove_outliers_menos_muestras(train_raw):
     assert len(train_transformed) < len(train_raw), 'No se ha producido correctamente el recorte de outliers'
 
 
-def test_remove_outliers_sin_corregir_alcohol(train_raw):
+def test_remove_outliers_sin_corregir_alcohol(train_raw: pd.DataFrame):
     wt = WineDatasetTransformer(
         corregir_alcohol=False,
         corregir_densidad=False,
@@ -173,7 +173,7 @@ def test_remove_outliers_sin_corregir_alcohol(train_raw):
         train_transformed: pd.DataFrame = wt.fit_transform(train_raw)
 
 
-def test_densidad_alcohol_interaction_sin_corregir_alcohol(train_raw):
+def test_densidad_alcohol_interaction_sin_corregir_alcohol(train_raw: pd.DataFrame):
     wt = WineDatasetTransformer(
         corregir_alcohol=False,
         corregir_densidad=False,
@@ -189,6 +189,104 @@ def test_densidad_alcohol_interaction_sin_corregir_alcohol(train_raw):
     )
     with pytest.raises(WrongColumnType):
         train_transformed: pd.DataFrame = wt.fit_transform(train_raw)
+
+
+def test_estandarizar_mismo_num_columnas_sin_corregir_alcohol_densidad(train_raw: pd.DataFrame):
+    wt = WineDatasetTransformer(
+        corregir_alcohol=False,
+        corregir_densidad=False,
+        color_interactions=False,
+        densidad_alcohol_interaction=False,
+        ratio_diox=False,
+        rbf_diox=False,
+        remove_outliers=False,
+        standardize=True,
+        log_transformation=None,
+        drop_columns=None,
+        shuffle=False,
+    )
+    train_transformed: pd.DataFrame = wt.fit_transform(train_raw)
+    assert len(train_transformed.columns) == len(train_raw.columns), f'El número de columnas no coincide: \
+        {len(train_transformed.columns)} != {len(train_raw.columns)}'
+
+
+def test_estandarizar_mismo_num_columnas_corrigiend_alcohol_densidad(train_raw: pd.DataFrame):
+    wt = WineDatasetTransformer(
+        corregir_alcohol=True,
+        corregir_densidad=True,
+        color_interactions=False,
+        densidad_alcohol_interaction=False,
+        ratio_diox=False,
+        rbf_diox=False,
+        remove_outliers=False,
+        standardize=True,
+        log_transformation=None,
+        drop_columns=None,
+        shuffle=False,
+    )
+    train_transformed: pd.DataFrame = wt.fit_transform(train_raw)
+    assert len(train_transformed.columns) == len(train_raw.columns), f'El número de columnas no coincide: \
+        {len(train_transformed.columns)} != {len(train_raw.columns)}'
+
+
+def test_ninguna_transformacion_comprobar_indices(train_raw: pd.DataFrame):
+    wt = WineDatasetTransformer(
+        corregir_alcohol=False,
+        corregir_densidad=False,
+        color_interactions=False,
+        densidad_alcohol_interaction=False,
+        ratio_diox=False,
+        rbf_diox=False,
+        remove_outliers=False,
+        standardize=False,
+        log_transformation=None,
+        drop_columns=None,
+        shuffle=False,
+    )
+    train_transformed: pd.DataFrame = wt.fit_transform(train_raw)
+    assert (train_transformed.index == train_raw.index).all(), 'Los índices no coinciden'
+
+
+def test_shuffle_comprobar_distintos_indices_misma_len(train_raw: pd.DataFrame):
+    wt = WineDatasetTransformer(
+        corregir_alcohol=False,
+        corregir_densidad=False,
+        color_interactions=False,
+        densidad_alcohol_interaction=False,
+        ratio_diox=False,
+        rbf_diox=False,
+        remove_outliers=False,
+        standardize=False,
+        log_transformation=None,
+        drop_columns=None,
+        shuffle=True,
+    )
+    train_transformed: pd.DataFrame = wt.fit_transform(train_raw)
+    # Comprobamos que haya distintos indices
+    assert (train_transformed.index != train_raw.index).any(), 'Los índices coinciden, no se ha shuffleado'
+    # Comprobamos que la longitud sea la misma
+    assert len(train_transformed) == len(train_raw), 'Las longitudes no coinciden y deberían'
+
+
+def test_ratio_diox_correcto(train_raw):
+    wt = WineDatasetTransformer(
+        corregir_alcohol=False,
+        corregir_densidad=False,
+        color_interactions=False,
+        densidad_alcohol_interaction=False,
+        ratio_diox=True,
+        rbf_diox=False,
+        remove_outliers=False,
+        standardize=False,
+        log_transformation=None,
+        drop_columns=None,
+        shuffle=False,
+    )
+    train_transformed: pd.DataFrame = wt.fit_transform(train_raw)
+    assert 'SO2_l / SO2_tot' in train_transformed.columns, "'ratio_diox' no se encuentra en las columnas"
+    expected = (
+        train_transformed['dioxido de azufre libre'] / train_transformed['dioxido de azufre total'])
+    assert np.isclose(train_transformed['SO2_l / SO2_tot'], expected, atol=1e-8).all()
 
 
 def test_log_column_wrong(train_raw):
@@ -209,7 +307,7 @@ def test_log_column_wrong(train_raw):
         train_transformed = wt.fit_transform(train_raw)
 
 
-def test_drop_column_wrong(train_raw):
+def test_drop_column_wrong(train_raw: pd.DataFrame):
     wt = WineDatasetTransformer(
         corregir_alcohol=False,
         corregir_densidad=False,
