@@ -1,9 +1,18 @@
-black
-mypy
-mypy-extensions
-pytest
-pytest-cov
-flake8
-sphinx
-recommonmark # soporte para markdown
-sphinx_rtd_theme # tema Read the Docs
+black==24.4.0
+mypy==1.9.0
+mypy-extensions==1.0.0
+pytest==8.1.1
+pytest-cov==5.0.0
+pandas==2.2.2 # Para los tests
+numpy==1.26.4
+flake8==7.0.0
+recommonmark==0.7.1 # soporte para markdown
+Sphinx==7.3.7
+sphinx-rtd-theme==2.0.0 # tema Read the Docs
+sphinxcontrib-applehelp==1.0.8
+sphinxcontrib-devhelp==1.0.6
+sphinxcontrib-htmlhelp==2.0.5
+sphinxcontrib-jquery==4.1
+sphinxcontrib-jsmath==1.0.1
+sphinxcontrib-qthelp==1.0.7
+sphinxcontrib-serializinghtml==1.1.10
