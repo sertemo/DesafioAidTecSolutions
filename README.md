@@ -43,8 +43,23 @@ $ sphinx-build -b html . _build/html
 Esto generará la documentación en html y lo guardará en **docs/_build/html**.
 
 ## Uso
-# 1. Build Features
-En primer lugar para la creación del dataset definitivo de cara al entrenamiento usaremos el comando **./make_features.sh** desde la raiz del proyecto. Este comando admite varias flags que aplicarán una serie de transformaciones al dataset original.
+### 1. Make Dataset
+Para descargar los datasets de la web de [Kopuru](https://kopuru.com/challenge/modelo-de-prediccion-de-calidad-en-el-vino-para-aidtec-solutions/?tab=tab-link_datos) usaremos el comando **./make_dataset.sh** desde la raiz del proyecto. Este argumento necesita 1 argumento que corresponde con el tipo de dataset a descargar: **train** o **test**.
+
+Para ver la ayuda:
+```sh
+$ ./make_dataset.sh -h
+```
+
+Ejemplo:
+```sh
+$ ./make_dataset.sh --train 
+```
+
+Esto descargará el dataset de train de la web de kopuru y lo almacenará con el nombre de **train.csv** en **data/processed**.
+
+### 2. Build Features
+Para la creación del dataset definitivo de cara al entrenamiento usaremos el comando **./make_features.sh** desde la raiz del proyecto. Este comando admite varias flags que aplicarán una serie de transformaciones al dataset original.
 
 Para ver todas las transformaciones disponibles:
 ```sh
@@ -55,6 +70,7 @@ Esto printeará en la consola la siguiente lista:
 ```
 options:
   -h, --help            show this help message and exit
+  --con CON             Especificar el archivo a abrir para las transformaciones
   --alcohol             Corrige los valores de la variable alcohol
   --densidad            Corrige los valores de la variable densidad
   --shuffle             Baraja el dataset

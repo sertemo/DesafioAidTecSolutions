@@ -16,10 +16,9 @@
 
 
 import argparse
-import types
 
 
-def generate_dataset_name(settings: types.ModuleType, args: argparse.Namespace) -> str:
+def generate_dataset_name(args: argparse.Namespace) -> str:
     """Devuelve el nombre de archivo para
     guardar el dataset como csv en función
     de las transformaciones realizadas
@@ -34,10 +33,10 @@ def generate_dataset_name(settings: types.ModuleType, args: argparse.Namespace) 
     Returns
     -------
     str
-        _description_
+        Devuelve el nombre del dataset para guardar
     """
     # Base del nombre del archivo, con el nombre del dataset
-    name_parts = [settings.TRAIN_DATASET]
+    name_parts = [args.con[0]]
 
     # Añadir partes del nombre basado en argumentos True
     if args.alcohol:
@@ -55,7 +54,7 @@ def generate_dataset_name(settings: types.ModuleType, args: argparse.Namespace) 
     if args.outliers:
         name_parts.append("remove_outliers")
     if args.estandarizar:
-        name_parts.append("standardize")
+        name_parts.append("estandarizar")
     if args.shuffle:
         name_parts.append("shuffle")
 

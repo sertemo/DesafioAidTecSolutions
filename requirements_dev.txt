@@ -8,6 +8,8 @@ scikit-learn==1.4.2
 numpy==1.26.4
 flake8==7.0.0
 recommonmark==0.7.1 # soporte para markdown
+requests-mock==1.12.1 # Para tests
+typing_extensions==4.11.0
 Sphinx==7.3.7
 sphinx-rtd-theme==2.0.0 # tema Read the Docs
 sphinxcontrib-applehelp==1.0.8

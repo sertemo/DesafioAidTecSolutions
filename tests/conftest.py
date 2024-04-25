@@ -21,5 +21,21 @@ import settings
 @pytest.fixture(scope="session")
 def train_raw():
     # Cargamos el dataset
-    df_train_raw = pd.read_csv(settings.RUTA_TRAIN_DATASET_RAW, index_col=0)
+    df_train_raw = pd.read_csv(settings.FOLDER_DATA_RAW / 'train.csv', index_col=0)
     return df_train_raw
+
+@pytest.fixture(scope="session")
+def test_raw():
+    # Cargamos el dataset
+    df_test_raw = pd.read_csv(settings.FOLDER_DATA_RAW / 'test.csv', index_col=0)
+    return df_test_raw
+
+@pytest.fixture(scope="session")
+def train_url():
+    # Devuelve la url del dataset train
+    return settings.TRAIN_URL
+
+@pytest.fixture(scope="session")
+def test_url():
+    # Devuelve la url del dataset train
+    return settings.TEST_URL

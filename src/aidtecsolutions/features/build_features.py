@@ -31,6 +31,11 @@ def main() -> None:
 
     # Añadimos argumentos
     parser.add_argument(
+        "--con",
+        nargs="+",
+        help="Nombre del archivo a aplicar las transformaciones",
+    )
+    parser.add_argument(
         "--alcohol",
         help="Corrige los valores de la variable alcohol",
         action="store_true",
@@ -90,6 +95,41 @@ def main() -> None:
     # Parseamos los argumentos
     args = parser.parse_args()
 
+    if args.con is None:
+        print(
+            "La flag --con no puede estar vacía. Debes especificar un dataset. Ejemplo --con train.csv"
+        )
+        return
+
+    # Verificar que solo se haya pasado un archivo
+    if len(args.con) > 1:
+        print(
+            f"Solo se puede pasar un archivo para transformar. Has pasado {len(args.con)}"
+        )
+        return
+
+    # Verificar que el archivo esté en data/raw
+    lista_archivos = [archivo.name for archivo in settings.FOLDER_DATA_RAW.iterdir()]
+    dataset = args.con[0]
+    if dataset not in lista_archivos:
+        print(
+            f"""
+        El archivo {dataset} no se encuentra en {settings.FOLDER_DATA_RAW},
+        quizás se te haya olvidado descargarlo.
+        Haz: ./make_dataset.sh --train para descargar el dataset train.csv o
+        ./make_dataset.sh --test para descargar el dataset test.csv.
+        """
+        )
+        print("Archivos:", lista_archivos)
+        return
+
+    # Verificar que se trate de un archivo válido
+    try:
+        pd.read_csv(settings.FOLDER_DATA_RAW / dataset)
+    except Exception as err:
+        print("El archivo no es válido. Error:", err)
+        return
+
     wt = WineDatasetTransformer(
         corregir_alcohol=args.alcohol,
         corregir_densidad=args.densidad,
@@ -104,14 +144,14 @@ def main() -> None:
         shuffle=args.shuffle,
     )
     # Cargamos el dataset raw
-    df_train = pd.read_csv(settings.RUTA_TRAIN_DATASET_RAW, index_col=0)
+    df_train = pd.read_csv(settings.FOLDER_DATA_RAW / dataset, index_col=0)
     # Aplicamos las transformaciones pasadas por consola
     df_train_transformed: pd.DataFrame = wt.fit_transform(df_train)
     print(df_train_transformed.columns)
     print(df_train_transformed.head())
 
     if args.save:
-        nombre_dataset: str = generate_dataset_name(settings, args)
+        nombre_dataset: str = generate_dataset_name(args)
         ruta_completa = settings.FOLDER_DATA_PROCESSED / nombre_dataset
         df_train_transformed.to_csv(ruta_completa)
 

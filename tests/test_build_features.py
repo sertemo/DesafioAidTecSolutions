@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
+
 import numpy as np
 import pandas as pd
 import pytest
 
 from aidtecsolutions.features.custom_transformers import WineDatasetTransformer
+from aidtecsolutions.features.utils import generate_dataset_name
 from aidtecsolutions.custom_exceptions import (
     WrongColumnName,
     WrongColumnType
@@ -323,3 +326,53 @@ def test_drop_column_wrong(train_raw: pd.DataFrame):
     )
     with pytest.raises(WrongColumnName):
         train_transformed = wt.fit_transform(train_raw)
+
+
+def test_generate_dataset_alcohol_densidad_drop():
+    # Simula los argumentos
+    args = argparse.Namespace(
+        con=["train.csv"],
+        alcohol=True,
+        densidad=True,
+        color=False,
+        densidad_alcohol=False,
+        ratiodiox=False,
+        rbfdiox=False,
+        outliers=False,
+        estandarizar=False,
+        shuffle=False,
+        drop=["color", "year"],
+        log=None
+    )
+
+    # Llamada a la función
+    result = generate_dataset_name(args)
+
+    # Verificar el resultado
+    expected = "train.csv-corregir_alcohol-corregir_densidad-drop=['color', 'year'].csv"
+    assert result == expected
+
+
+def test_generate_dataset_name_some_false():
+    # Configuración con algunos argumentos False
+    args = argparse.Namespace(
+        con=["dataset_base.csv"],
+        alcohol=False,
+        densidad=False,
+        color=True,
+        densidad_alcohol=False,
+        ratiodiox=False,
+        rbfdiox=False,
+        outliers=True,
+        estandarizar=False,
+        shuffle=False,
+        drop=[],
+        log=None
+    )
+
+    # Llamada a la función
+    result = generate_dataset_name(args)
+
+    # Verificar el resultado
+    expected = "dataset_base.csv-color_interactions-remove_outliers.csv"
+    assert result == expected

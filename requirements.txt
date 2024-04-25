@@ -13,7 +13,7 @@ commonmark==0.9.1
 contourpy==1.2.1
 coverage==7.4.4
 cycler==0.12.1
--e git+ssh://git@github.com/sertemo/DesafioAidTecSolutions.git@ca1bac64c2a6e4a311a97ec7e211e0a27c438947#egg=DesafioAidTecSolutions
+-e git+ssh://git@github.com/sertemo/DesafioAidTecSolutions.git@34ee05f4cc823702e3f39aa11b3b6ccd0aeda814#egg=DesafioAidTecSolutions
 distlib==0.3.8
 docutils==0.20.1
 filelock==3.13.4
@@ -63,6 +63,7 @@ pytest-cov==5.0.0
 python-dateutil==2.9.0.post0
 pytz==2024.1
 requests==2.31.0
+requests-mock==1.12.1
 rich==13.7.1
 scikit-learn==1.4.2
 scipy==1.13.0
@@ -78,6 +79,7 @@ termcolor==2.4.0
 threadpoolctl==3.4.0
 tox==4.14.2
 tqdm==4.66.2
+types-requests==2.31.0.20240406
 typing_extensions==4.11.0
 tzdata==2024.1
 urllib3==2.2.1

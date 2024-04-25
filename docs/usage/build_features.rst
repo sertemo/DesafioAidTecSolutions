@@ -14,7 +14,12 @@ A continuación se detallan sus métodos y parámetros.
     :undoc-members:
     :show-inheritance:
 
-Para utilizar este script se usa la terminal mediante el comando ``./make_features.sh --flag``
+Para utilizar este script se usa la terminal mediante el comando:
+
+.. code-block:: bash
+
+
+    $ ./make_features.sh --flag
 
 Uso
 ---
@@ -26,6 +31,7 @@ Para acceder a la ayuda de los comandos disponibles. Desde la raiz del proyecto:
 
 Parámetros
 ----------
+- ``--con archivo.csv``: Nombre del dataset de data/raw para hacer transformaciones.
 - ``--alcohol``: Corrige los valores de la variable alcohol.
 - ``--densidad``: Corrige los valores de la variable densidad.
 - ``--shuffle``: Baraja el dataset.
@@ -45,10 +51,11 @@ Aquí se muestra cómo puedes correr ``build_features.py`` con diferentes config
 
 .. code-block:: bash
 
-    $ ./make_features.sh --alcohol --densidad --shuffle --drop year calidad color
-    $ ./make_features.sh --alcohol --densidad --shuffle --estandarizar --save
+    $ ./make_features.sh --con train.csv --alcohol --densidad --shuffle --drop year calidad color
+    $ ./make_features.sh --con train.csv --alcohol --densidad --shuffle --estandarizar --save
 
-El primer comando corregirá los valores de la variable alcohol y densidad, barajará el dataset y dropeará las columnas year, calidad y color
+El primer comando abrirá el dataset **train.csv**, corregirá los valores de la variable alcohol y densidad, barajará el dataset y dropeará las columnas year, calidad y color
 
-El segundo comando además de corregir y barajar, estandarizará el dataset y lo guardará con la carpeta ``data/processed``.
+El segundo comando además de corregir y barajar, estandarizará el dataset y lo guardará con la carpeta **data/processed**. El nombre del archivo creado será:
+**train.csv-corregir_alcohol-corregir_densidad-shuffle-estandarizar.csv
 

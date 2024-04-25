@@ -22,7 +22,10 @@ FOLDER_DATA_PROCESSED = Path("data/processed")
 FOLDER_DATA_INTERIM = Path("data/interim")
 FOLDER_MODELS_SERIALISED = Path("models")
 
+KOPURU_URL = 'https://kopuru.com/wp-content/uploads/2024/01'
 TRAIN_DATASET = "calidad_vino_AT-_train.csv"
-TEST_DATASET = "calidad_vino_AT-_test.csv"
+TEST_DATASET = "calidad_vino_AT_test.csv"
+TRAIN_URL = "".join([KOPURU_URL, '/', TRAIN_DATASET])
+TEST_URL = "".join([KOPURU_URL, '/', TEST_DATASET])
 RUTA_TRAIN_DATASET_RAW = FOLDER_DATA_RAW / TRAIN_DATASET
 RUTA_TEST_DATASET_RAW = FOLDER_DATA_RAW / TEST_DATASET
