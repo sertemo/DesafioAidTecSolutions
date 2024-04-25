@@ -57,5 +57,5 @@ Aquí se muestra cómo puedes correr ``build_features.py`` con diferentes config
 El primer comando abrirá el dataset **train.csv**, corregirá los valores de la variable alcohol y densidad, barajará el dataset y dropeará las columnas year, calidad y color
 
 El segundo comando además de corregir y barajar, estandarizará el dataset y lo guardará con la carpeta **data/processed**. El nombre del archivo creado será:
-**train.csv-corregir_alcohol-corregir_densidad-shuffle-estandarizar.csv
+**train.csv-corregir_alcohol-corregir_densidad-shuffle-estandarizar.csv**
 

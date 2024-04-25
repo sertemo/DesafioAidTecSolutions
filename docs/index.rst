@@ -10,6 +10,7 @@ Bienvenido a la documentación del proyecto Aidtec Solutions's!
    :maxdepth: 2
    :caption: Contents:
 
+   usage/make_dataset
    usage/build_features
 
 
