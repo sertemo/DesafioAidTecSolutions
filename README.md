@@ -31,6 +31,17 @@ $ pip install -e .
 
 Esto crea enlaces al paquete en el entorno virtual
 
+
+## Documentación
+La documentación ha sido generada con **Sphinx** y está disponible desde **docs/_build/html/index.html**
+
+Para generar de nuevo la documentación. Desde el directorio **docs**:
+```sh
+$ sphinx-build -b html . _build/html
+```
+
+Esto generará la documentación en html y lo guardará en **docs/_build/html**.
+
 ## Uso
 # 1. Build Features
 En primer lugar para la creación del dataset definitivo de cara al entrenamiento usaremos el comando **./make_features.sh** desde la raiz del proyecto. Este comando admite varias flags que aplicarán una serie de transformaciones al dataset original.
