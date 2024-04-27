@@ -23,13 +23,22 @@ class WrongColumnName(Exception):
         _description_
     """
 
-    pass
-
 
 class WrongColumnType(Exception):
     """Cuando intentas hacer una interacción
     con una columna y tiene un tipo objeto
     por ejemplo, que no es correcto
+
+    Parameters
+    ----------
+    Exception : _type_
+        _description_
+    """
+
+
+class DatasetDownloadError(Exception):
+    """Cuando se da un error al descargar
+    el dataset
 
     Parameters
     ----------

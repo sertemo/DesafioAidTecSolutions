@@ -16,6 +16,7 @@
 
 import requests
 
+from aidtecsolutions.custom_exceptions import DatasetDownloadError
 import settings
 
 
@@ -29,6 +30,12 @@ def download_dataset(url: str, nombre_archivo: str) -> None:
         _description_
     nombre_archivo : str
         _description_
+
+    Raises
+    -------
+    DatasetDoenloadError
+        Si la conexión no se ha realizado
+        correctamente
     """
     respuesta = requests.get(url)
     print(f"GET {url}")
@@ -41,4 +48,6 @@ def download_dataset(url: str, nombre_archivo: str) -> None:
             f.write(respuesta.content)
         print(f"Archivo guardado en {ruta_completa}")
     else:
-        print("Error al descargar el archivo. Estado:", respuesta.status_code)
+        err = f"Error al descargar el archivo. Estado: {respuesta.status_code}"
+        print(err)
+        raise DatasetDownloadError(err)

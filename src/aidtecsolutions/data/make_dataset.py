@@ -19,6 +19,7 @@
 
 import argparse
 
+from aidtecsolutions.custom_exceptions import DatasetDownloadError
 from aidtecsolutions.data.utils import download_dataset
 import settings
 
@@ -43,9 +44,15 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.train:
-        download_dataset(settings.TRAIN_URL, "train.csv")
+        try:
+            download_dataset(settings.TRAIN_URL, "train.csv")
+        except DatasetDownloadError as exc:
+            print(f"Error al descargar el dataset: {exc}")
     elif args.test:
-        download_dataset(settings.TEST_URL, "test.csv")
+        try:
+            download_dataset(settings.TEST_URL, "test.csv")
+        except DatasetDownloadError as exc:
+            print(f"Error al descargar el dataset: {exc}")
 
 
 if __name__ == "__main__":
