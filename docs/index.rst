@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Bienvenido a la documentación del proyecto Aidtec Solutions's!
+Bienvenid@ a la documentación del proyecto Aidtec Solutions!
 =========================================================================================================================================
 
 .. toctree::
@@ -12,6 +12,7 @@ Bienvenido a la documentación del proyecto Aidtec Solutions's!
 
    usage/make_dataset
    usage/build_features
+   usage/train_model
 
 
 
