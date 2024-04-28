@@ -28,7 +28,14 @@ from aidtecsolutions.features.utils import generate_dataset_name
 from aidtecsolutions.utils import is_valid_dataset, is_valid_dataframe
 
 
-def main() -> None:
+def setup_parser() -> argparse.ArgumentParser:
+    """Crea el parser con los argumentos
+
+    Returns
+    -------
+    argparse.ArgumentParser
+        _description_
+    """
     parser = argparse.ArgumentParser()
 
     # Añadimos argumentos
@@ -94,7 +101,13 @@ def main() -> None:
         action="store_true",
     )
 
+    return parser
+
+
+def main() -> None:
+
     # Parseamos los argumentos
+    parser = setup_parser()
     args = parser.parse_args()
 
     # Verificar que el archivo esté en data/raw
@@ -110,7 +123,7 @@ def main() -> None:
         )
         return
 
-    # Verificar que se trate de un archivo válido
+    # Verificar que se trate de un archivo válido, si lo es carga el dataset
     try:
         df_train = is_valid_dataframe(settings.FOLDER_DATA_RAW, dataset)
     except NonValidDataset as exc:
@@ -130,8 +143,7 @@ def main() -> None:
         drop_columns=args.drop,
         shuffle=args.shuffle,
     )
-    # Cargamos el dataset raw
-    df_train = pd.read_csv(settings.FOLDER_DATA_RAW / dataset, index_col=0)
+
     # Aplicamos las transformaciones pasadas por consola
     df_train_transformed: pd.DataFrame = wt.fit_transform(df_train)
     print(df_train_transformed.columns)

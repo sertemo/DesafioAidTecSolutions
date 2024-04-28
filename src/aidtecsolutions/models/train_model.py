@@ -25,18 +25,14 @@ from sklearn.model_selection import (
     cross_val_predict,
 )
 from sklearn.metrics import classification_report
+from sklearn.preprocessing import LabelEncoder
 from xgboost import XGBClassifier
 
 from aidtecsolutions.custom_exceptions import NonValidDataset
 from aidtecsolutions.models.custom_models import SerializableClassifier
+from aidtecsolutions.models.utils import generate_model_name
 from aidtecsolutions.utils import is_valid_dataset, is_valid_dataframe
 import settings
-
-
-available_models = {
-    "randomforest": RandomForestClassifier(),
-    "xgb": XGBClassifier(),
-}
 
 
 def setup_parser() -> argparse.ArgumentParser:
@@ -154,6 +150,7 @@ def main() -> None:
     # Parseamos los argumentos
     parser = setup_parser()
     args = parser.parse_args()
+    print(args)
 
     # Comprobamos que existe el archivo pasado por el usuario
     if not is_valid_dataset(args.data, settings.FOLDER_DATA_PROCESSED):
@@ -185,7 +182,7 @@ def main() -> None:
             max_depth=args.max_depth,
             class_weight=args.class_weight,
         )
-    model_name = model.__class__.__name__
+    model_name = model
     print(model_name)
 
     model = SerializableClassifier(model)
@@ -193,29 +190,47 @@ def main() -> None:
     X = df_train.drop(columns=[settings.TARGET_FEATURE])
     y = df_train[settings.TARGET_FEATURE]
 
+    # Codificamos labels
+    label_encoder = LabelEncoder()
+    y_encoded = label_encoder.fit_transform(y)
+
     # Usamos cross validation para estimar una accuracy media
     results_cv = cross_val_score(
         model,
         X,
-        y,
+        y_encoded,
         n_jobs=-1,
         scoring="accuracy",
         cv=StratifiedKFold(n_splits=settings.SPLITS_FOR_CV),
     )
 
     y_preds = cross_val_predict(
-        model, X, y, cv=StratifiedKFold(n_splits=settings.SPLITS_FOR_CV), n_jobs=-1
+        model,
+        X,
+        y_encoded,
+        cv=StratifiedKFold(n_splits=settings.SPLITS_FOR_CV),
+        n_jobs=-1,
     )
 
     print(f"Resultados de modelo {model_name}")
     print(
         f"Accuracy media en CV con {settings.SPLITS_FOR_CV} splits: {results_cv.mean():.3%}"
     )
-    print(classification_report(y_true=y, y_pred=y_preds, zero_division=0))
+    print(classification_report(y_true=y_encoded, y_pred=y_preds, zero_division=0))
 
-    # TODO solo entrenamos el modelo si han pasado '--save'
-    # Wrappeamos con el serializer
-    # model = SerializableClassifier(model)
+    # Solo entrenamos el modelo si han pasado '--save'
+    if args.save:
+        # Entrenamos en el dataset completo
+        model.fit(X, y_encoded)
+        # Guardamos
+        try:
+            model_filename = generate_model_name(args)
+            model.save(settings.FOLDER_MODELS_SERIALISED / model_filename)
+        except Exception as exc:
+            print(f"Se ha producido un error al guardar el modelo: {exc}")
+        else:
+            print("Guardado correctamente modelo:")
+            print(model_filename)
 
 
 if __name__ == "__main__":

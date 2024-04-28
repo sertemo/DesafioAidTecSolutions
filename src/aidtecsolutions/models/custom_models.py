@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import joblib
+from pathlib import Path
 from typing import cast, Any
 
 import numpy as np
@@ -59,7 +60,7 @@ class SerializableMixin:
     """Clase que implementa el método save
     para serializar un modelo"""
 
-    def save(self, model_path: str) -> None:
+    def save(self, model_path: Path) -> None:
         """Serializa el modelo usando joblib"""
         with open(model_path, "wb") as f:
             joblib.dump(self, f)

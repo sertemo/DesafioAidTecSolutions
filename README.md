@@ -44,7 +44,7 @@ Esto generará la documentación en html y lo guardará en **docs/_build/html**.
 
 ## Uso
 ### 1. Make Dataset
-Para descargar los datasets de la web de [Kopuru](https://kopuru.com/challenge/modelo-de-prediccion-de-calidad-en-el-vino-para-aidtec-solutions/?tab=tab-link_datos) usaremos el comando **./make_dataset.sh** desde la raiz del proyecto. Este argumento necesita 1 argumento que corresponde con el tipo de dataset a descargar: **train** o **test**.
+Para descargar los datasets de la web de [Kopuru](https://kopuru.com/challenge/modelo-de-prediccion-de-calidad-en-el-vino-para-aidtec-solutions/?tab=tab-link_datos) usaremos el comando `./make_dataset` desde la raiz del proyecto. Este argumento necesita 1 argumento que corresponde con el tipo de dataset a descargar: **train** o **test**.
 
 Para ver la ayuda:
 ```sh
@@ -59,7 +59,7 @@ $ ./make_dataset.sh --train
 Esto descargará el dataset de train de la web de kopuru y lo almacenará con el nombre de **train.csv** en **data/processed**.
 
 ### 2. Build Features
-Para la creación del dataset definitivo de cara al entrenamiento usaremos el comando **./make_features.sh** desde la raiz del proyecto. Este comando admite varias flags que aplicarán una serie de transformaciones al dataset original.
+Para la creación del dataset definitivo de cara al entrenamiento usaremos el comando `./make_features.sh` desde la raiz del proyecto. Este comando admite varias flags que aplicarán una serie de transformaciones al dataset original.
 
 Para ver todas las transformaciones disponibles:
 ```sh
@@ -90,11 +90,66 @@ options:
 
 ```
 
-La flag **--save** guarda el dataset transformado con una estructura de nombre que sigue el siguiente formato:
+La flag `--save` guarda el dataset transformado con una estructura de nombre que sigue el siguiente formato:
 ```
-<nombre dataset original>-<transformacion_1>-<transfomacion_2>-drop=['columa1', 'columna2'].csv
+<nombre dataset original>-<transformacion_1>-<transfomacion_2>-drop=columa1-columna2.csv
 ```
 
+### 3. Train Model
+Para entrenar un modelo usaremos el comando `./train_model.sh` junto con varios argumentos.
+
+La estructura a ejecutar es la siguiente:
+
+```sh
+$ ./train_model.sh --data <nombre dataset> [--save] <modelo: xgb o randomforest> [parámetros del modelo]
+```
+
+Para ver los comandos principales disponibles podemos recurrir a la ayuda:
+
+```sh
+$ ./train_model.sh --help
+```
+
+Esto imprimirá lo siguiente
+
+```sh
+options:
+  -h, --help          show this help message and exit
+  --data DATA         Nombre del archivo del dataset sobre el que entrenar el modelo. Debe estar en                   la carpeta data/processed
+  --save              Guarda el modelo serializado con joblib en /models
+
+models:
+  Modelos disponibles para entrenamiento
+
+  {xgb,randomforest}
+    xgb               Entrena un modelo xgb con sus parámetros
+    randomforest      Entrena un modelo RF con sus parámetros
+```
+
+El primer argumento a pasar representa el dataset con el que queremos entrenar el modelo. El argumento es `--data` seguido del nombre de archivo. El archivo debe estar guardado dentro de la carpeta **data/processed**.
+
+El siguiente argumento opcional a pasar es `--save`. Si este argumento es pasado, el modelo entrenado resultante se guardará serializado con **joblib** en la carpeta **models/**. El nombre del archivo se generará automáticamente cogiendo el nombre del dataset de entrenamiento y los parámetros del modelo.
+
+El siguiente argumento obligatorio representa el nombre del modelo que queremos entrenar. De momento disponibles están **xgb** y **randomforest**.
+
+Para ver los argumentos opcionales de cada modelo se puede ejecutar la ayuda:
+
+Los del **xgb**:
+```sh
+$ ./train_model xgb --help
+```
+
+Los del **random forest**:
+```sh
+$ ./train_model randomforest --help
+```
+
+Un ejemplo de sentencia completa podría ser:
+```sh
+$  ./train_model.sh --save --data  train.csv-corregir_alcohol-corregir_densidad-drop=alcohol-densidad-year-color.csv randomforest --n_estimators 150 --criterion log_loss
+```
+
+Al entrenar el modelo se evaluará primero con **cross validation** y 5 splits en el dataset y se imprimirá la accuracy media de todos los splits y un informe con otras métricas.
 
 ## Licencia
 Copyright 2024 Sergio Tejedor Moreno
