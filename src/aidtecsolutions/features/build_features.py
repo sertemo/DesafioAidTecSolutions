@@ -22,8 +22,10 @@ import argparse
 import pandas as pd
 
 import settings
+from aidtecsolutions.custom_exceptions import NonValidDataset
 from aidtecsolutions.features.custom_transformers import WineDatasetTransformer
 from aidtecsolutions.features.utils import generate_dataset_name
+from aidtecsolutions.utils import is_valid_dataset, is_valid_dataframe
 
 
 def main() -> None:
@@ -32,8 +34,8 @@ def main() -> None:
     # Añadimos argumentos
     parser.add_argument(
         "--con",
-        nargs="+",
         help="Nombre del archivo a aplicar las transformaciones",
+        required=True,
     )
     parser.add_argument(
         "--alcohol",
@@ -95,23 +97,9 @@ def main() -> None:
     # Parseamos los argumentos
     args = parser.parse_args()
 
-    if args.con is None:
-        print(
-            "La flag --con no puede estar vacía. Debes especificar un dataset. Ejemplo --con train.csv"
-        )
-        return
-
-    # Verificar que solo se haya pasado un archivo
-    if len(args.con) > 1:
-        print(
-            f"Solo se puede pasar un archivo para transformar. Has pasado {len(args.con)}"
-        )
-        return
-
     # Verificar que el archivo esté en data/raw
-    lista_archivos = [archivo.name for archivo in settings.FOLDER_DATA_RAW.iterdir()]
-    dataset = args.con[0]
-    if dataset not in lista_archivos:
+    dataset = args.con
+    if not is_valid_dataset(dataset, settings.FOLDER_DATA_RAW):
         print(
             f"""
         El archivo {dataset} no se encuentra en {settings.FOLDER_DATA_RAW},
@@ -120,14 +108,13 @@ def main() -> None:
         ./make_dataset.sh --test para descargar el dataset test.csv.
         """
         )
-        print("Archivos:", lista_archivos)
         return
 
     # Verificar que se trate de un archivo válido
     try:
-        pd.read_csv(settings.FOLDER_DATA_RAW / dataset)
-    except Exception as err:
-        print("El archivo no es válido. Error:", err)
+        df_train = is_valid_dataframe(settings.FOLDER_DATA_RAW, dataset)
+    except NonValidDataset as exc:
+        print(f"Dataset erróneo. Error: {exc}")
         return
 
     wt = WineDatasetTransformer(

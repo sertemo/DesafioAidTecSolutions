@@ -45,3 +45,14 @@ class DatasetDownloadError(Exception):
     Exception : _type_
         _description_
     """
+
+
+class NonValidDataset(Exception):
+    """Cuando se da un error abrir un
+    dataset
+
+    Parameters
+    ----------
+    Exception : _type_
+        _description_
+    """

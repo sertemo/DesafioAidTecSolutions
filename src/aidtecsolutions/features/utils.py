@@ -36,7 +36,7 @@ def generate_dataset_name(args: argparse.Namespace) -> str:
         Devuelve el nombre del dataset para guardar
     """
     # Base del nombre del archivo, con el nombre del dataset
-    name_parts = [args.con[0]]
+    name_parts = [args.con]
 
     # Añadir partes del nombre basado en argumentos True
     if args.alcohol:
@@ -61,11 +61,11 @@ def generate_dataset_name(args: argparse.Namespace) -> str:
     # Para listas, solo añadir si no están vacías
     if args.drop and len(args.drop) > 0:
         # drop_columns = "_".join(args.drop)
-        name_parts.append(f"drop={args.drop}")
+        name_parts.append(f"drop={'-'.join(args.drop)}")
 
     # Para transformaciones logarítmicas, verificar que no sea None
     if args.log:
-        name_parts.append(f"log_transformation={args.log}")
+        name_parts.append(f"log_transformation={'-'.join(args.log)}")
 
     # Unir todas las partes con guiones bajos
     return "-".join(name_parts) + ".csv"

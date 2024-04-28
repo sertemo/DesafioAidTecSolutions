@@ -331,7 +331,7 @@ def test_drop_column_wrong(train_raw: pd.DataFrame):
 def test_generate_dataset_alcohol_densidad_drop():
     # Simula los argumentos
     args = argparse.Namespace(
-        con=["train.csv"],
+        con="train.csv",
         alcohol=True,
         densidad=True,
         color=False,
@@ -349,14 +349,14 @@ def test_generate_dataset_alcohol_densidad_drop():
     result = generate_dataset_name(args)
 
     # Verificar el resultado
-    expected = "train.csv-corregir_alcohol-corregir_densidad-drop=['color', 'year'].csv"
+    expected = "train.csv-corregir_alcohol-corregir_densidad-drop=color-year.csv"
     assert result == expected
 
 
 def test_generate_dataset_name_some_false():
     # Configuración con algunos argumentos False
     args = argparse.Namespace(
-        con=["dataset_base.csv"],
+        con="dataset_base.csv",
         alcohol=False,
         densidad=False,
         color=True,
