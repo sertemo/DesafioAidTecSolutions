@@ -3,6 +3,8 @@
 ## Predicción de la calidad del vino a través de muestras de laboratorio
 
 ![Tests](https://github.com/sertemo/DesafioAidTecSolutions/actions/workflows/tests.yml/badge.svg)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/usuario/repositorio?label=version)
+
 
 ## Consideraciones del desafío
 1. Cada una de las muestras (registros de las muestras) ha sido tomada de una única botella en las mismas condiciones y momento del proceso (tras el embotellado). Por tanto, todas las muestras están sujetas al mismo proceso, ya que se trata de vinos de año.
