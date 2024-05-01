@@ -5,6 +5,10 @@
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sertemo/DesafioAidTecSolutions)
 ![Dependabot Status](https://badgen.net/dependabot/sertemo/DesafioAidTecSolutions/?icon=dependabot)
 ![GitHub](https://img.shields.io/github/license/sertemo/DesafioAidTecSolutions)
+![black](https://img.shields.io/github/workflow/status/<USERNAME>/<REPOSITORY>/Linting%20and%20Type%20Checking?label=black&logo=black)
+![flake8](https://img.shields.io/github/workflow/status/<USERNAME>/<REPOSITORY>/Linting%20and%20Type%20Checking?label=flake8&logo=python)
+![mypy](https://img.shields.io/github/workflow/status/<USERNAME>/<REPOSITORY>/Linting%20and%20Type%20Checking?label=mypy&logo=python)
+
 
 
 
