@@ -93,7 +93,7 @@ def setup_parser() -> argparse.ArgumentParser:
         help="L1 regularization term on weights. \
             Increasing this value will make model more conservative.",
         default=0,
-        type=int,
+        type=float,
     )
     xgb_parser.add_argument(
         "--learning_rate",

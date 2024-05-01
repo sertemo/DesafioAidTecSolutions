@@ -1,5 +1,4 @@
-# Desafío Kopuru
-## AidTec Solutions
+# DesafioAidTecSolutions v0.1.0
 ## Predicción de la calidad del vino a través de muestras de laboratorio
 
 ![Tests](https://github.com/sertemo/DesafioAidTecSolutions/actions/workflows/tests.yml/badge.svg)
@@ -69,7 +68,7 @@ $ ./make_features.sh -h
 ```
 
 Esto printeará en la consola la siguiente lista:
-```
+```sh
 options:
   -h, --help            show this help message and exit
   --con CON             Especificar el archivo a abrir para las transformaciones
@@ -152,6 +151,8 @@ $  ./train_model.sh --save --data  train.csv-corregir_alcohol-corregir_densidad-
 ```
 
 Al entrenar el modelo se evaluará primero con **cross validation** y 5 splits en el dataset y se imprimirá la accuracy media de todos los splits y un informe con otras métricas.
+
+### 4. Predict Model
 
 ## Licencia
 Copyright 2024 Sergio Tejedor Moreno

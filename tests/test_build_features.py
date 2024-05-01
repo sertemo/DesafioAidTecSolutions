@@ -19,11 +19,47 @@ import pandas as pd
 import pytest
 
 from aidtecsolutions.features.custom_transformers import WineDatasetTransformer
+from aidtecsolutions.features.build_features import setup_parser
 from aidtecsolutions.features.utils import generate_dataset_name
 from aidtecsolutions.custom_exceptions import (
     WrongColumnName,
     WrongColumnType
 )
+
+def test_feature_parser_with_valid_args() -> None:
+    parser = setup_parser()
+    args = parser.parse_args([
+        '--con', 'train.csv',
+        '--alcohol',
+        '--densidad',
+        '--densidad_alcohol',
+        '--save',
+    ])
+    
+    assert args.con == 'train.csv'
+    assert args.alcohol == True
+    assert args.densidad == True
+    assert args.densidad_alcohol == True
+    assert args.save == True
+
+def test_feature_parser_with_incorrect_args() -> None:
+    parser = setup_parser()    
+    with pytest.raises(SystemExit):
+        args = parser.parse_args([
+            #'--con', 'train.csv',
+            '--alcohol',
+            '--densidad',
+            '--densidad_alcohol',
+            '--save',
+        ])
+
+def test_feature_parser_with_incorrect_args_error_msg(capfd) -> None:
+    parser = setup_parser()
+    with pytest.raises(SystemExit):
+        parser.parse_args(['--alcohol'])  # Intencionalmente omitiendo '--con'
+
+    out, err = capfd.readouterr()
+    assert "the following arguments are required: --con" in err
 
 
 def test_corregir_alcohol_type_float(train_raw: pd.DataFrame):
