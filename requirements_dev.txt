@@ -10,6 +10,7 @@ flake8==7.0.0
 recommonmark==0.7.1 # soporte para markdown
 requests-mock==1.12.1 # Para tests
 typing_extensions==4.11.0
+xgboost==2.0.3
 Sphinx==7.3.7
 sphinx-rtd-theme==2.0.0 # tema Read the Docs
 sphinxcontrib-applehelp==1.0.8
