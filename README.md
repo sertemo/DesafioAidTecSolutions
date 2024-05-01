@@ -2,7 +2,10 @@
 ## Predicción de la calidad del vino a través de muestras de laboratorio
 
 ![Tests](https://github.com/sertemo/DesafioAidTecSolutions/actions/workflows/tests.yml/badge.svg)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sertemo/DesafioAidTecSolutions?label=version)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sertemo/DesafioAidTecSolutions)
+![Dependabot Status](https://badgen.net/dependabot/sertemo/DesafioAidTecSolutions/?icon=dependabot)
+![GitHub](https://img.shields.io/github/license/sertemo/DesafioAidTecSolutions)
+
 
 
 ## Consideraciones del desafío
