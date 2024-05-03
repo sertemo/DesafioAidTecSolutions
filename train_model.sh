@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Este script facilita la ejecución de build_features.py con diferentes configuraciones.
+# Este script facilita la ejecución de train_model.py con diferentes configuraciones.
 
 function train_model() {
     # Construir el comando con los argumentos pasados a este script de Bash

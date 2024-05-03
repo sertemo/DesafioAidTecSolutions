@@ -59,3 +59,9 @@ El primer comando abrirá el dataset **train.csv**, corregirá los valores de la
 El segundo comando además de corregir y barajar, estandarizará el dataset y lo guardará con la carpeta **data/processed**. El nombre del archivo creado será:
 **train.csv-corregir_alcohol-corregir_densidad-shuffle-estandarizar.csv**
 
+**Importante**: No se admiten espacios en los nombres de las columnas. Para pasar nombres de columnas con espacios se deben de sustituir dichos espacios por guiones bajos. Por ejemplo:
+
+.. code-block:: bash
+
+    $ ./make_features.sh --con train.csv --alcohol --densidad --shuffle --densidad_alcohol --ratiodiox --rbfdiox --drop color densidad alcohol dioxido_de_azufre_libre --save
+

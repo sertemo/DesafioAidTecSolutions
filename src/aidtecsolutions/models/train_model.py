@@ -29,7 +29,7 @@ from sklearn.preprocessing import LabelEncoder
 from xgboost import XGBClassifier
 
 from aidtecsolutions.custom_exceptions import NonValidDataset
-from aidtecsolutions.models.custom_models import SerializableClassifier
+from aidtecsolutions.wrappers import SerializableClassifier, SerializableTransformer
 from aidtecsolutions.models.utils import generate_model_name
 from aidtecsolutions.utils import is_valid_dataset, is_valid_dataframe
 import settings
@@ -166,7 +166,7 @@ def main() -> None:
         print(f"Dataset erróneo. Error: {exc}")
         return
 
-    print(f"Validando modelo con CV y {settings.SPLITS_FOR_CV} splits:")
+    print(f"Validando modelo con CV y {settings.SPLITS_FOR_CV} splits ...")
     if args.model == "xgb":
         model = XGBClassifier(
             n_estimators=args.n_estimators,
@@ -192,7 +192,8 @@ def main() -> None:
 
     # Codificamos labels
     label_encoder = LabelEncoder()
-    y_encoded = label_encoder.fit_transform(y)
+    label_encoder_serial = SerializableTransformer(label_encoder)
+    y_encoded = label_encoder_serial.fit_transform(y)
 
     # Usamos cross validation para estimar una accuracy media
     results_cv = cross_val_score(
@@ -226,6 +227,11 @@ def main() -> None:
         try:
             model_filename = generate_model_name(args)
             model.save(settings.FOLDER_MODELS_SERIALISED / model_filename)
+            # Guardamos también los label encoders
+            label_encoder_serial.save(
+                settings.FOLDER_MODELS_SERIALISED
+                / (settings.LABEL_ENCODER_NAME + ".joblib")
+            )
         except Exception as exc:
             print(f"Se ha producido un error al guardar el modelo: {exc}")
         else:

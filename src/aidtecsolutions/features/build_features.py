@@ -24,7 +24,7 @@ import pandas as pd
 import settings
 from aidtecsolutions.custom_exceptions import NonValidDataset
 from aidtecsolutions.features.custom_transformers import WineDatasetTransformer
-from aidtecsolutions.features.utils import generate_dataset_name
+from aidtecsolutions.features.utils import generate_dataset_name, parse_col_name
 from aidtecsolutions.utils import is_valid_dataset, is_valid_dataframe
 
 
@@ -140,7 +140,7 @@ def main() -> None:
         remove_outliers=args.outliers,
         standardize=args.estandarizar,
         log_transformation=args.log,
-        drop_columns=args.drop,
+        drop_columns=parse_col_name(args.drop),
         shuffle=args.shuffle,
     )
 

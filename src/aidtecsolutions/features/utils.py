@@ -69,3 +69,21 @@ def generate_dataset_name(args: argparse.Namespace) -> str:
 
     # Unir todas las partes con guiones bajos
     return "-".join(name_parts) + ".csv"
+
+
+def parse_col_name(col_names: list[str]) -> list[str]:
+    """Dada una lista de strings que corresponden
+    con los nombres de las columnas. Cambia los guiones
+    bajos por espacios
+
+    Parameters
+    ----------
+    col_names : list[str]
+        _description_
+
+    Returns
+    -------
+    list[str]
+        _description_
+    """
+    return [str(col.replace("_", " ")).strip() for col in col_names]

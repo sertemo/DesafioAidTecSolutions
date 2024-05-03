@@ -23,7 +23,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 from aidtecsolutions.models.train_model import setup_parser
 from aidtecsolutions.models.utils import generate_model_name
-from aidtecsolutions.models.custom_models import SerializableClassifier
+from aidtecsolutions.wrappers import SerializableClassifier
 
 def test_model_parser_with_valid_args() -> None:
     parser = setup_parser()

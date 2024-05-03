@@ -20,7 +20,7 @@ import pytest
 
 from aidtecsolutions.features.custom_transformers import WineDatasetTransformer
 from aidtecsolutions.features.build_features import setup_parser
-from aidtecsolutions.features.utils import generate_dataset_name
+from aidtecsolutions.features.utils import generate_dataset_name, parse_col_name
 from aidtecsolutions.custom_exceptions import (
     WrongColumnName,
     WrongColumnType
@@ -52,6 +52,7 @@ def test_feature_parser_with_incorrect_args() -> None:
             '--densidad_alcohol',
             '--save',
         ])
+
 
 def test_feature_parser_with_incorrect_args_error_msg(capfd) -> None:
     parser = setup_parser()
@@ -412,3 +413,11 @@ def test_generate_dataset_name_some_false():
     # Verificar el resultado
     expected = "dataset_base.csv-color_interactions-remove_outliers.csv"
     assert result == expected
+
+
+def good_parsed_col_name() -> None:
+    """Parsea correctamente el nombre de las columnas
+    """
+    list_col_names = ['color', 'alcohol', 'dioxido_de_azufre_libre ']  # Extra espacio al final  
+    expected = ['color', 'alcohol', 'dioxido de azufre libre']
+    assert parse_col_name(list_col_names) == expected

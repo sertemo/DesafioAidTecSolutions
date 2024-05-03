@@ -45,12 +45,12 @@ def main() -> None:
 
     if args.train:
         try:
-            download_dataset(settings.TRAIN_URL, "train.csv")
+            download_dataset(settings.TRAIN_URL, settings.TRAIN_FILE)
         except DatasetDownloadError as exc:
             print(f"Error al descargar el dataset: {exc}")
     elif args.test:
         try:
-            download_dataset(settings.TEST_URL, "test.csv")
+            download_dataset(settings.TEST_URL, settings.TEST_FILE)
         except DatasetDownloadError as exc:
             print(f"Error al descargar el dataset: {exc}")
 

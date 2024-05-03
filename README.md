@@ -18,7 +18,7 @@
 1. Desarrollar un modelo de clasificación capaz de predecir con los datos de las muestras del 2024 cuál será la calidad de dichas muestras, tomando como referencia datos entre 2019 y 2023.
 2. Desarrollar un informe explicativo donde se desarrollen las conclusiones sobre variables que más influyen en los resultados y el por qué, así como el análisis previo de los datos y sus descriptivos.
 
-## Notas
+## Objetivo
 Proyecto con la intención de practicar la organización y estructura de proyectos de **data science** siguiendo la arquitectura de [cookiecutter](https://drivendata.github.io/cookiecutter-data-science/#starting-a-new-project) pero sin usar dicha herramienta.
 
 - La creación de las diferentes carpetas se realiza a mano y se empaqueta usando **setuptools**
@@ -58,7 +58,7 @@ Ejemplo:
 $ ./make_dataset.sh --train 
 ```
 
-Esto descargará el dataset de train de la web de kopuru y lo almacenará con el nombre de **train.csv** en **data/processed**.
+Esto descargará el dataset de train de la web de kopuru y lo almacenará con el nombre de **train.csv** en **data/processed**. El nombre se puede editar desde **settings.py**.
 
 ### 2. Build Features
 Para la creación del dataset definitivo de cara al entrenamiento usaremos el comando `./make_features.sh` desde la raiz del proyecto. Este comando admite varias flags que aplicarán una serie de transformaciones al dataset original.
@@ -95,6 +95,12 @@ options:
 La flag `--save` guarda el dataset transformado con una estructura de nombre que sigue el siguiente formato:
 ```
 <nombre dataset original>-<transformacion_1>-<transfomacion_2>-drop=columa1-columna2.csv
+```
+
+**Importante**: Los nombres de las columnas que contengan espacios deberán pasarse sustituyendo dichos espacios por guiones bajos. Por ejemplo:
+
+```sh
+$ ./make_features.sh --con train.csv --alcohol --densidad --shuffle --densidad_alcohol --ratiodiox --rbfdiox --drop color densidad alcohol dioxido_de_azufre_libre --save
 ```
 
 ### 3. Train Model
@@ -154,6 +160,41 @@ $  ./train_model.sh --save --data  train.csv-corregir_alcohol-corregir_densidad-
 Al entrenar el modelo se evaluará primero con **cross validation** y 5 splits en el dataset y se imprimirá la accuracy media de todos los splits y un informe con otras métricas.
 
 ### 4. Predict Model
+Para realizar predicciones necesitaremos:
+1. Un dataset **X_test** transformado sin la columna **calidad**.
+2. Un modelo entrenado sobre un dataset con las mismas transformacioens que **X_test**
+
+Para hacer predicciones utilizaremos el comando: `./make_prediction.sh` junto dos argumentos.
+
+El dataset a utilizar deberá estar en la carpeta **data/processed**.
+
+El modelo a utilizar deberá estar en la carpeta **/models**.
+
+El argumento opcional `--merge` guarda las predicciones junto con el archivo `test.csv` especificado en **settings.py** como `TEST_FILE` y lo guarda en la carpeta **data/processed** con el nombre especificado.
+
+Para ver la ayuda:
+```sh
+$ ./make_prediction.sh --help
+```
+
+Esto imprimirá:
+```sh
+Utilizando modelos entrenados y un dataset previamente transformado, lanza predicciones
+
+options:
+  -h, --help     show this help message and exit
+  --data DATA    El archivo dataset en data/processed sobre el que hacer predicciones
+  --model MODEL  El archivo del modelo de /models con el que hacer las predicciones
+  --merge MERGE  Mergea las predicciones junto con el dataset `test.csv` que debe estar en data/raw. Guarda en data/processed el nuevo dataframe con el nombre especificado.
+```
+
+Ejemplo de uso:
+```sh
+$ ./make_prediction.sh --data test.csv-corregir_alcohol-corregir_densidad-densidad_alcohol_interaction-ratio_diox-rbf_diox-shuffle-drop=color-densidad-alcohol-year-dioxido_de_azufre_libre-calidad.csv --model model_data=train.csv-corregir_alcohol-corregir_densidad-densidad_alcohol_interaction-ratio_diox-rbf_diox-shuffle-drop=color-densidad-alcohol-year-dioxido_de_azufre_libre.csv_model=randomforest_n_estimators=900_criterion=gini.joblib --merge y_preds.csv
+```
+
+La línea anterior lanza predicciones sobre el dataset especificado con el modelo especificado, une las predicciones al dataset **test.csv** que debe localizarse en **data/raw** y las guarda en el archivo **y_preds.csv** en **data/processed**.
+
 
 ## Licencia
 Copyright 2024 Sergio Tejedor Moreno

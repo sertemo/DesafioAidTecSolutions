@@ -18,7 +18,9 @@ def update_readme():
 
     # Asumiendo que el título y versión están en las primeras líneas del README
     readme_contents[0] = f"# {project_name} v{project_version}\n"
-
+    print(readme_contents[1])
+    print(readme_contents[2])
+    print(readme_contents[3])
     # Escribir el contenido actualizado de nuevo a README.md
     with open('README.md', 'w') as file:
         file.writelines(readme_contents)
