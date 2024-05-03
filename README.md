@@ -18,7 +18,7 @@
 1. Desarrollar un modelo de clasificación capaz de predecir con los datos de las muestras del 2024 cuál será la calidad de dichas muestras, tomando como referencia datos entre 2019 y 2023.
 2. Desarrollar un informe explicativo donde se desarrollen las conclusiones sobre variables que más influyen en los resultados y el por qué, así como el análisis previo de los datos y sus descriptivos.
 
-## Objetivo
+## Notas
 Proyecto con la intención de practicar la organización y estructura de proyectos de **data science** siguiendo la arquitectura de [cookiecutter](https://drivendata.github.io/cookiecutter-data-science/#starting-a-new-project) pero sin usar dicha herramienta.
 
 - La creación de las diferentes carpetas se realiza a mano y se empaqueta usando **setuptools**
@@ -52,8 +52,19 @@ Para ver la ayuda:
 ```sh
 $ ./make_dataset.sh -h
 ```
+Esto imprimirá lo siguiente:
+```sh
+usage: make_dataset.py [-h] [--train] [--test]
 
-Ejemplo:
+Descarga los datasets train y test de la web de Kopuru
+
+options:
+  -h, --help  show this help message and exit
+  --train     Descarga el dataset de train de la web de kopuru
+  --test      Descarga el dataset de test la web de kopuru
+```
+
+Ejemplo de uso:
 ```sh
 $ ./make_dataset.sh --train 
 ```

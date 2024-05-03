@@ -25,7 +25,9 @@ import settings
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Descarga los datasets train y test de la web de Kopuru"
+    )
 
     # Añadimos argumentos
     parser.add_argument(
