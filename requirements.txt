@@ -78,7 +78,7 @@ tensorflow-io-gcs-filesystem==0.31.0
 termcolor==2.4.0
 threadpoolctl==3.4.0
 tox==4.14.2
-tqdm==4.66.2
+tqdm==4.66.3
 types-requests==2.31.0.20240406
 typing_extensions==4.11.0
 tzdata==2024.1
