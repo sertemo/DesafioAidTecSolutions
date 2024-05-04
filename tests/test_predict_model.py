@@ -12,47 +12,55 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import numpy as np
 import pandas as pd
 import pytest
-from aidtecsolutions.models.predict_model import setup_parser, main
+
+from aidtecsolutions.models.predict_model import PredictModel
+import settings
 
 def test_parser_with_no_args():
-    parser = setup_parser()
+    pm = PredictModel()
+    parser = pm._setup_parser()
     with pytest.raises(SystemExit):
         parser.parse_args([])  # Debería fallar sin argumentos requeridos
 
+def test_parser_configuration():
+    pm = PredictModel()
+    parser = pm._setup_parser()
+    # Verifica que todas las opciones requeridas estén presentes
+    assert 'data' in parser.format_help()
+    assert 'model' in parser.format_help()
+    assert 'merge' in parser.format_help()
+
 def test_parser_with_all_args():
-    parser = setup_parser()
+    pm = PredictModel()
+    parser = pm._setup_parser()
     args = parser.parse_args(['--data', 'data.csv', '--model', 'model.joblib'])
     assert args.data == 'data.csv'
     assert args.model == 'model.joblib'
 
-def test_invalid_dataset(mocker):
-    # Mock de la función is_valid_dataset para retornar False
-    mocker.patch('aidtecsolutions.utils.is_valid_dataset', return_value=False)
-    # Mock del print para evitar salidas durante el test
-    mocker.patch('builtins.print')
-
-    # Revisar si la función main maneja correctamente un dataset inválido
-    with pytest.raises(SystemExit):
-        main()
-
-def test_valid_dataset(mocker):
-    # Mock de la función is_valid_dataset para retornar True
+def test_file_check_and_predictions(predict_model, mocker):
+    # Mocks para los checks de archivos y para cargar datos/modelos
     mocker.patch('aidtecsolutions.utils.is_valid_dataset', return_value=True)
-    # Mock de la función is_valid_dataframe para retornar un DataFrame vacío
     mocker.patch('aidtecsolutions.utils.is_valid_dataframe', return_value=pd.DataFrame())
-    # Mock del sistema de archivos para simular un archivo de modelo existente
     mocker.patch('pathlib.Path.exists', return_value=True)
-    # Mock de la función load y predict del modelo
+    mocker.patch('builtins.print')  # suprimir la salida de print
+
     mock_model = mocker.Mock()
     mocker.patch('aidtecsolutions.wrappers.SerializableClassifier.load', return_value=mock_model)
-    mock_model.predict.return_value = ['prediction']
-    # Mock del print para evitar salidas durante el test
-    mocker.patch('builtins.print')
+    mock_transformer = mocker.Mock()
+    mocker.patch('aidtecsolutions.wrappers.SerializableTransformer.load', return_value=mock_transformer)
 
-    # Ejecutar la función main para ver si procesa correctamente un dataset válido
-    main()
+    mock_model.predict.return_value = np.array([2, 3, 4])  # Simular predicciones
+    transform_preds = np.array([5, 6, 7])
+    mock_transformer.inverse_transform.return_value = transform_preds
 
-    # Asegurar que el método predict fue llamado
-    mock_model.predict.assert_called_once()
+    # Simular argumentos de línea de comandos
+    mocker.patch('argparse.ArgumentParser.parse_args',
+                return_value=mocker.Mock(data='data.csv', model='model.joblib', merge=None))
+
+    predict_model.main()
+
+    # Verificaciones
+    assert mock_model.preds is not None

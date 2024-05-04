@@ -15,6 +15,7 @@
 import pandas as pd
 import pytest
 
+from aidtecsolutions.models.predict_model import PredictModel
 import settings
 
 
@@ -39,3 +40,7 @@ def train_url():
 def test_url():
     # Devuelve la url del dataset train
     return settings.TEST_URL
+
+@pytest.fixture
+def predict_model():
+    return PredictModel()

@@ -150,7 +150,6 @@ def main() -> None:
     # Parseamos los argumentos
     parser = setup_parser()
     args = parser.parse_args()
-    print(args)
 
     # Comprobamos que existe el archivo pasado por el usuario
     if not is_valid_dataset(args.data, settings.FOLDER_DATA_PROCESSED):

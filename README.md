@@ -71,7 +71,7 @@ $ ./make_dataset.sh --train
 
 Esto descargará el dataset de train de la web de kopuru y lo almacenará con el nombre de **train.csv** en **data/processed**. El nombre se puede editar desde **settings.py**.
 
-### 2. Build Features
+### 2. Make Features
 Para la creación del dataset definitivo de cara al entrenamiento usaremos el comando `./make_features.sh` desde la raiz del proyecto. Este comando admite varias flags que aplicarán una serie de transformaciones al dataset original.
 
 Para ver todas las transformaciones disponibles:
@@ -158,9 +158,49 @@ Los del **xgb**:
 $ ./train_model xgb --help
 ```
 
+Esto imprimirá lo siguiente:
+```sh
+usage: train_model.py xgb [-h] [--gamma GAMMA] [--max_depth MAX_DEPTH] [--alpha ALPHA] [--learning_rate LEARNING_RATE]
+                          [--n_estimators N_ESTIMATORS]
+
+options:
+  -h, --help            show this help message and exit
+  --gamma GAMMA         Minimum loss reduction required to make a further partition on a leaf node of the tree.         The larger gamma    
+                        is, the more conservative the algorithm will be.
+  --max_depth MAX_DEPTH
+                        Maximum depth of a tree. Increasing this value will make the model more complex and more likely to
+                        overfit. 0 indicates no limit on depth.
+  --alpha ALPHA         L1 regularization term on weights. Increasing this value will make model more conservative.
+  --learning_rate LEARNING_RATE
+                        Learning rate
+  --n_estimators N_ESTIMATORS
+                        Number of trees
+```
+
 Los del **random forest**:
 ```sh
 $ ./train_model randomforest --help
+```
+Esto imprimirá lo siguiente:
+```sh
+usage: train_model.py randomforest [-h] [--n_estimators N_ESTIMATORS] [--criterion {gini,entropy,log_loss}]
+                                   [--max_depth MAX_DEPTH] [--class_weight {balanced,balanced_subsample,None}]
+
+options:
+  -h, --help            show this help message and exit
+  --n_estimators N_ESTIMATORS
+                        Number of trees
+  --criterion {gini,entropy,log_loss}
+                        The function to measure the quality of a split. Supported criteria are “gini” for the Gini impurity and     
+                        “log_loss” and “entropy” both for the Shannon information gain, see Mathematical formulation. Note: This    
+                        parameter is tree-specific.
+  --max_depth MAX_DEPTH
+                        The maximum depth of the tree. If None, then nodes are expanded until all leaves are pure or until all      
+                        leaves contain less than min_samples_split samples.
+  --class_weight {balanced,balanced_subsample,None}
+                        Weights associated with classes in the form {class_label: weight}. If not given, all classes are supposed   
+                        to have weight one. For multi-output problems, a list of dicts can be provided in the same order as the     
+                        columns of y
 ```
 
 Un ejemplo de sentencia completa podría ser:
@@ -170,7 +210,7 @@ $  ./train_model.sh --save --data  train.csv-corregir_alcohol-corregir_densidad-
 
 Al entrenar el modelo se evaluará primero con **cross validation** y 5 splits en el dataset y se imprimirá la accuracy media de todos los splits y un informe con otras métricas.
 
-### 4. Predict Model
+### 4. Make Prediction
 Para realizar predicciones necesitaremos:
 1. Un dataset **X_test** transformado sin la columna **calidad**.
 2. Un modelo entrenado sobre un dataset con las mismas transformacioens que **X_test**
