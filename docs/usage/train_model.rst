@@ -10,7 +10,7 @@ El módulo ``train_model`` se usa para entrenar dos tipos de modelos:
 Clases
 -------
 
-.. autoclass:: aidtecsolutions.models.custom_models.SerializableClassifier
+.. autoclass:: aidtecsolutions.wrappers.SerializableClassifier
     :members:
     :undoc-members:
     :show-inheritance:

@@ -13,6 +13,7 @@ Bienvenid@ a la documentación del proyecto Aidtec Solutions!
    usage/make_dataset
    usage/build_features
    usage/train_model
+   usage/predict_model
 
 
 
