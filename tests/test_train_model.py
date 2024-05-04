@@ -100,7 +100,6 @@ def test_incorrect_model_name() -> None:
     name = generate_model_name(args)
     assert name != 'model_data=train-corregir_alcohol.csv_save=False_model=randomforest_n_estimators=950.joblib'
 
-
 def test_initialization():
     """Prueba que el clasificador se inicializa correctamente."""
     dt = RandomForestClassifier()
