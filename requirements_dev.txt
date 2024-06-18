@@ -5,7 +5,7 @@ pytest==8.1.1
 pytest-cov==5.0.0
 pytest-mock==3.14.0
 pandas==2.2.2 # Para los tests
-scikit-learn==1.4.2
+scikit-learn==1.5.0
 numpy==1.26.4
 flake8==7.0.0
 recommonmark==0.7.1 # soporte para markdown
